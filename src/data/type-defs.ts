@@ -2,6 +2,7 @@ export const typeDefs = `
   type Query {
     heroes: [Hero]
     hero(id: Int!): Hero
+    searchHeroes(searchTerm: String): [Hero]
   }
 
   type Mutation {
