@@ -16,7 +16,7 @@ import { Apollo } from 'apollo-angular';
 
 const searchHeroQuery = gql`
   query searchHeroQuery($searchTerm: String) {
-    searchHero(searchTerm: $searchTerm) {
+    searchHeroes(searchTerm: $searchTerm) {
       id
       name
     }
@@ -24,7 +24,7 @@ const searchHeroQuery = gql`
 `;
 
 type HeroesResponse = {
-  heroes: Hero[];
+  searchHeroes: Hero[];
 };
 
 @Component({
@@ -60,7 +60,7 @@ export class HeroSearchComponent implements OnInit {
               searchTerm: term,
             },
           })
-          .pipe(map(({ data }) => data.heroes))
+          .pipe(map(({ data }) => data.searchHeroes))
       )
     );
   }

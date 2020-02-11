@@ -12,7 +12,7 @@ export function createApollo(heroService: HeroService) {
     Query: {
       heroes: () => heroService.getHeroes().toPromise(),
       hero: (_, args) => heroService.getHero(args.id).toPromise(),
-      searchHero: (_, args) =>
+      searchHeroes: (_, args) =>
         heroService.searchHeroes(args.searchTerm).toPromise(),
     },
     Mutation: {
