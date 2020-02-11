@@ -5,6 +5,7 @@ import { makeExecutableSchema } from 'graphql-tools';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HeroService } from '../app/hero.service';
 import { typeDefs } from '../data/type-defs';
+import { Hero } from './hero';
 
 export function createApollo(heroService: HeroService) {
   const resolvers = {
@@ -14,6 +15,9 @@ export function createApollo(heroService: HeroService) {
     },
     Mutation: {
       saveHero: (_, args) => heroService.updateHero(args.hero).toPromise(),
+      addHero: (_, args) =>
+        heroService.addHero({ name: args.name } as Hero).toPromise(),
+      deleteHero: (_, args) => heroService.deleteHero(args.hero).toPromise(),
     },
   };
   const schema = makeExecutableSchema({ typeDefs, resolvers });

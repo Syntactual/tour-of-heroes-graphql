@@ -1,39 +1,102 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Hero } from '../hero';
 import { HeroService } from '../hero.service';
+import { Observable } from 'rxjs';
+import { Apollo } from 'apollo-angular';
+import gql from 'graphql-tag';
+import { map, take } from 'rxjs/operators';
+
+const getHeroesQuery = gql`
+  query {
+    heroes {
+      id
+      name
+    }
+  }
+`;
+
+const addHeroMutation = gql`
+  mutation addHeroMutation($name: String!) {
+    addHero(name: $name) {
+      id
+      name
+    }
+  }
+`;
+
+const deleteHeroMutation = gql`
+  mutation deleteHeroMutation($hero: HeroInput!) {
+    deleteHero(hero: $hero) {
+      id
+      name
+    }
+  }
+`;
+
+type HeroesResponse = {
+  heroes: Hero[];
+};
 
 @Component({
   selector: 'app-heroes',
   templateUrl: './heroes.component.html',
-  styleUrls: ['./heroes.component.css']
+  styleUrls: ['./heroes.component.css'],
 })
 export class HeroesComponent implements OnInit {
-  heroes: Hero[];
-
-  constructor(private heroService: HeroService) { }
+  heroes$: Observable<Hero[]>;
+  constructor(private apollo: Apollo, private heroService: HeroService) {}
 
   ngOnInit() {
     this.getHeroes();
   }
 
   getHeroes(): void {
-    this.heroService.getHeroes()
-    .subscribe(heroes => this.heroes = heroes);
+    this.heroes$ = this.apollo
+      .watchQuery<HeroesResponse>({
+        query: getHeroesQuery,
+      })
+      .valueChanges.pipe(map(({ data }) => data.heroes));
   }
 
   add(name: string): void {
     name = name.trim();
-    if (!name) { return; }
-    this.heroService.addHero({ name } as Hero)
-      .subscribe(hero => {
-        this.heroes.push(hero);
-      });
+    if (!name) {
+      return;
+    }
+    this.apollo
+      .mutate({
+        mutation: addHeroMutation,
+        variables: {
+          name,
+        },
+        refetchQueries: [
+          {
+            query: getHeroesQuery,
+          },
+        ],
+      })
+      .pipe(take(1))
+      .subscribe();
   }
 
   delete(hero: Hero): void {
-    this.heroes = this.heroes.filter(h => h !== hero);
-    this.heroService.deleteHero(hero).subscribe();
+    const heroInput = {
+      id: hero.id,
+      name: hero.name,
+    };
+    this.apollo
+      .mutate({
+        mutation: deleteHeroMutation,
+        variables: {
+          hero: heroInput,
+        },
+        refetchQueries: [
+          {
+            query: getHeroesQuery,
+          },
+        ],
+      })
+      .pipe(take(1))
+      .subscribe();
   }
-
 }
