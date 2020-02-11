@@ -15,6 +15,10 @@ const getHeroesQuery = gql`
   }
 `;
 
+type Response = {
+  heroes: Hero[];
+};
+
 @Component({
   selector: 'app-dashboard',
   templateUrl: './dashboard.component.html',
@@ -31,9 +35,9 @@ export class DashboardComponent implements OnInit {
 
   getHeroes(): void {
     this.heroes$ = this.apollo
-      .watchQuery<any>({
+      .watchQuery<Response>({
         query: getHeroesQuery,
       })
-      .valueChanges.pipe(map(result => result.data.heroes.slice(1, 5)));
+      .valueChanges.pipe(map(({ data }) => data.heroes.slice(1, 5)));
   }
 }

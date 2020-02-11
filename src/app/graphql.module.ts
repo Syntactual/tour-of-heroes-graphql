@@ -10,6 +10,10 @@ export function createApollo(heroService: HeroService) {
   const resolvers = {
     Query: {
       heroes: () => heroService.getHeroes().toPromise(),
+      hero: (_, args) => heroService.getHero(args.id).toPromise(),
+    },
+    Mutation: {
+      saveHero: (_, args) => heroService.updateHero(args.hero).toPromise(),
     },
   };
   const schema = makeExecutableSchema({ typeDefs, resolvers });
