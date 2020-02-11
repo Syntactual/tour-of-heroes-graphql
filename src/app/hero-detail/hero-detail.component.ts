@@ -1,17 +1,24 @@
-import { Component, OnInit, Input } from '@angular/core';
+import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-
 import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
 import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
-import { map } from 'rxjs/operators';
+import { map, take } from 'rxjs/operators';
 
 const getHeroQuery = gql`
   query getHero($id: Int!) {
     hero(id: $id) {
+      id
+      name
+    }
+  }
+`;
+
+const saveHeroMutation = gql`
+  mutation saveHeroMutation($hero: saveHeroInput!) {
+    saveHero(hero: $hero) {
       id
       name
     }
@@ -28,13 +35,11 @@ type Response = {
   styleUrls: ['./hero-detail.component.css'],
 })
 export class HeroDetailComponent implements OnInit {
-  @Input() hero: Hero;
   hero$: Observable<Hero>;
 
   constructor(
     private apollo: Apollo,
     private route: ActivatedRoute,
-    private heroService: HeroService,
     private location: Location
   ) {}
 
@@ -58,8 +63,25 @@ export class HeroDetailComponent implements OnInit {
     this.location.back();
   }
 
-  save(): void {
-    // why is this.hero passing null
-    this.heroService.updateHero(this.hero).subscribe(() => this.goBack());
+  save(hero: Hero): void {
+    const heroInput = {
+      id: hero.id,
+      name: hero.name,
+    };
+    this.apollo
+      .mutate({
+        mutation: saveHeroMutation,
+        variables: {
+          hero: heroInput,
+        },
+        refetchQueries: [
+          {
+            query: getHeroQuery,
+            variables: { id: hero.id },
+          },
+        ],
+      })
+      .pipe(take(1))
+      .subscribe(() => this.goBack());
   }
 }
