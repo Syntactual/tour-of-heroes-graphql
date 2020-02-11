@@ -1,6 +1,5 @@
 import { Component, OnInit } from '@angular/core';
 import { Hero } from '../hero';
-import { HeroService } from '../hero.service';
 import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
@@ -15,7 +14,7 @@ const getHeroesQuery = gql`
   }
 `;
 
-type Response = {
+type HeroesResponse = {
   heroes: Hero[];
 };
 
@@ -35,7 +34,7 @@ export class DashboardComponent implements OnInit {
 
   getHeroes(): void {
     this.heroes$ = this.apollo
-      .watchQuery<Response>({
+      .watchQuery<HeroesResponse>({
         query: getHeroesQuery,
       })
       .valueChanges.pipe(map(({ data }) => data.heroes.slice(1, 5)));

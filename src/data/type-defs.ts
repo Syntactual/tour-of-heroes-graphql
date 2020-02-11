@@ -5,10 +5,12 @@ export const typeDefs = `
   }
 
   type Mutation {
-    saveHero(hero: saveHeroInput!): Hero
+    saveHero(hero: HeroInput!): Hero
+    addHero(name: String!): Hero
+    deleteHero(hero: HeroInput!): Hero
   }
 
-  input saveHeroInput {
+  input HeroInput {
     id: Int
     name: String
   }

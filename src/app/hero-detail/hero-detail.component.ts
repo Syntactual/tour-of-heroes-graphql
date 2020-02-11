@@ -17,7 +17,7 @@ const getHeroQuery = gql`
 `;
 
 const saveHeroMutation = gql`
-  mutation saveHeroMutation($hero: saveHeroInput!) {
+  mutation saveHeroMutation($hero: HeroInput!) {
     saveHero(hero: $hero) {
       id
       name
@@ -25,7 +25,7 @@ const saveHeroMutation = gql`
   }
 `;
 
-type Response = {
+type HeroResponse = {
   hero: Hero;
 };
 
@@ -50,7 +50,7 @@ export class HeroDetailComponent implements OnInit {
   getHero(): void {
     const id = +this.route.snapshot.paramMap.get('id');
     this.hero$ = this.apollo
-      .watchQuery<Response>({
+      .watchQuery<HeroResponse>({
         query: getHeroQuery,
         variables: {
           id,
