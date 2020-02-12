@@ -69,32 +69,36 @@ export class HeroesComponent implements OnInit {
         variables: {
           name,
         },
-        refetchQueries: [
-          {
+        update: (store, { data: { addHero } }: any) => {
+          // Read the data from our cache for this query.
+          const data: HeroesResponse = store.readQuery({
             query: getHeroesQuery,
-          },
-        ],
+          });
+          data.heroes = [...data.heroes, addHero];
+          // Write our data back to the cache.
+          store.writeQuery({ query: getHeroesQuery, data });
+        },
       })
       .pipe(take(1))
       .subscribe();
   }
 
   delete(hero: Hero): void {
-    const heroInput = {
-      id: hero.id,
-      name: hero.name,
-    };
     this.apollo
       .mutate({
         mutation: deleteHeroMutation,
         variables: {
-          hero: heroInput,
+          hero: { id: hero.id, name: hero.name },
         },
-        refetchQueries: [
-          {
+        update: store => {
+          // Read the data from our cache for this query.
+          const data: HeroesResponse = store.readQuery({
             query: getHeroesQuery,
-          },
-        ],
+          });
+          data.heroes = data.heroes.filter(h => h.id !== hero.id);
+          // Write our data back to the cache.
+          store.writeQuery({ query: getHeroesQuery, data });
+        },
       })
       .pipe(take(1))
       .subscribe();
