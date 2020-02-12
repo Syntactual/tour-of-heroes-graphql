@@ -1,4 +1,4 @@
-# tour-of-heroes-graphql
+# Tour of Heroes Graphql
 
 The is a clone of the Tour of Heroes tutorial on Angular.io. 
 
