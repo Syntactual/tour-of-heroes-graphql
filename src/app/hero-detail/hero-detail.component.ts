@@ -6,6 +6,7 @@ import gql from 'graphql-tag';
 import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map, take } from 'rxjs/operators';
+import { ApolloQueryResult } from 'apollo-client';
 
 const getHeroQuery = gql`
   query getHero($id: Int!) {
@@ -64,22 +65,23 @@ export class HeroDetailComponent implements OnInit {
   }
 
   save(hero: Hero): void {
-    const heroInput = {
-      id: hero.id,
-      name: hero.name,
-    };
     this.apollo
       .mutate({
         mutation: saveHeroMutation,
         variables: {
-          hero: heroInput,
+          hero: { id: hero.id, name: hero.name },
         },
-        refetchQueries: [
-          {
+        update: store => {
+          // Read the data from our cache for this query.
+          console.log(store);
+          const data: HeroResponse = store.readQuery({
             query: getHeroQuery,
             variables: { id: hero.id },
-          },
-        ],
+          });
+          data.hero = hero;
+          // Write our data back to the cache.
+          store.writeQuery({ query: getHeroQuery, data });
+        },
       })
       .pipe(take(1))
       .subscribe(() => this.goBack());
