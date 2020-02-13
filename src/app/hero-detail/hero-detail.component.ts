@@ -2,7 +2,7 @@ import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
 import { Observable, Subscription } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import {
   GetHeroGQL,
   SaveHeroGQL,
@@ -59,7 +59,6 @@ export class HeroDetailComponent implements OnInit {
           },
         }
       )
-      .pipe(take(1))
       .subscribe(() => this.goBack());
   }
 }
