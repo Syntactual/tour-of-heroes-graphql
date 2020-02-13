@@ -22,6 +22,7 @@ export function createApollo(heroService: HeroService) {
       deleteHero: (_, args) => heroService.deleteHero(args.hero).toPromise(),
     },
   };
+
   const schema = makeExecutableSchema({ typeDefs, resolvers });
   return {
     link: new SchemaLink({ schema }),
