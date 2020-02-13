@@ -1,4 +1,6 @@
-export const typeDefs = `
+import gql from 'graphql-tag';
+
+export const typeDefs = gql`
   type Query {
     heroes: [Hero]
     hero(id: Int!): Hero
