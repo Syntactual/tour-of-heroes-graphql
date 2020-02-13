@@ -1,0 +1,13 @@
+query getHero($id: Int!) {
+  hero(id: $id) {
+    id
+    name
+  }
+}
+
+mutation saveHero($hero: HeroInput!) {
+  saveHero(hero: $hero) {
+    id
+    name
+  }
+}

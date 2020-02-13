@@ -1,0 +1,6 @@
+query searchHeroes($searchTerm: String) {
+  searchHeroes(searchTerm: $searchTerm) {
+    id
+    name
+  }
+}

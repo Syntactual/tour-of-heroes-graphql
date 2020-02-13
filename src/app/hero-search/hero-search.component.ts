@@ -1,31 +1,12 @@
 import { Component, OnInit } from '@angular/core';
-
 import { Observable, Subject } from 'rxjs';
-
 import {
   debounceTime,
   distinctUntilChanged,
   switchMap,
   map,
-  tap,
 } from 'rxjs/operators';
-
-import { Hero } from '../hero';
-import gql from 'graphql-tag';
-import { Apollo } from 'apollo-angular';
-
-const searchHeroQuery = gql`
-  query searchHeroQuery($searchTerm: String) {
-    searchHeroes(searchTerm: $searchTerm) {
-      id
-      name
-    }
-  }
-`;
-
-type HeroesResponse = {
-  searchHeroes: Hero[];
-};
+import { SearchHeroesGQL, Hero } from '../../generated/graphql';
 
 @Component({
   selector: 'app-hero-search',
@@ -36,7 +17,7 @@ export class HeroSearchComponent implements OnInit {
   heroes$: Observable<Hero[]>;
   private searchTerms = new Subject<string>();
 
-  constructor(private apollo: Apollo) {}
+  constructor(private searchHeroesGQL: SearchHeroesGQL) {}
 
   // Push a search term into the observable stream.
   search(term: string): void {
@@ -53,12 +34,9 @@ export class HeroSearchComponent implements OnInit {
 
       // switch to new search observable each time the term changes
       switchMap((term: string) =>
-        this.apollo
-          .query<HeroesResponse>({
-            query: searchHeroQuery,
-            variables: {
-              searchTerm: term,
-            },
+        this.searchHeroesGQL
+          .fetch({
+            searchTerm: term,
           })
           .pipe(map(({ data }) => data.searchHeroes))
       )

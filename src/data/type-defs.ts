@@ -1,6 +1,7 @@
 import gql from 'graphql-tag';
 
-export const typeDefs = gql`
+
+export default gql`
   type Query {
     heroes: [Hero]
     hero(id: Int!): Hero
