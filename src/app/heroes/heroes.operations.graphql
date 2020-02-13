@@ -1,0 +1,13 @@
+mutation addHero($name: String!) {
+  addHero(name: $name) {
+    id
+    name
+  }
+}
+
+mutation deleteHero($hero: HeroInput!) {
+  deleteHero(hero: $hero) {
+    id
+    name
+  }
+}

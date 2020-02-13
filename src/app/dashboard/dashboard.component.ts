@@ -1,22 +1,7 @@
 import { Component, OnInit } from '@angular/core';
-import { Hero } from '../hero';
-import gql from 'graphql-tag';
-import { Apollo } from 'apollo-angular';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
-
-const getHeroesQuery = gql`
-  query {
-    heroes {
-      id
-      name
-    }
-  }
-`;
-
-type HeroesResponse = {
-  heroes: Hero[];
-};
+import { GetHeroesGQL, Hero } from '../../generated/graphql';
 
 @Component({
   selector: 'app-dashboard',
@@ -26,17 +11,15 @@ type HeroesResponse = {
 export class DashboardComponent implements OnInit {
   heroes$: Observable<Hero[]>;
 
-  constructor(private apollo: Apollo) {}
+  constructor(private getHeroesGQL: GetHeroesGQL) {}
 
   ngOnInit() {
     this.getHeroes();
   }
 
   getHeroes(): void {
-    this.heroes$ = this.apollo
-      .watchQuery<HeroesResponse>({
-        query: getHeroesQuery,
-      })
+    this.heroes$ = this.getHeroesGQL
+      .watch()
       .valueChanges.pipe(map(({ data }) => data.heroes.slice(1, 5)));
   }
 }

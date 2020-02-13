@@ -1,34 +1,15 @@
 import { Component, OnInit } from '@angular/core';
 import { ActivatedRoute } from '@angular/router';
 import { Location } from '@angular/common';
-import { Hero } from '../hero';
-import gql from 'graphql-tag';
-import { Apollo } from 'apollo-angular';
-import { Observable } from 'rxjs';
+import { Observable, Subscription } from 'rxjs';
 import { map, take } from 'rxjs/operators';
-import { ApolloQueryResult } from 'apollo-client';
-
-const getHeroQuery = gql`
-  query getHero($id: Int!) {
-    hero(id: $id) {
-      id
-      name
-    }
-  }
-`;
-
-const saveHeroMutation = gql`
-  mutation saveHeroMutation($hero: HeroInput!) {
-    saveHero(hero: $hero) {
-      id
-      name
-    }
-  }
-`;
-
-type HeroResponse = {
-  hero: Hero;
-};
+import {
+  GetHeroGQL,
+  SaveHeroGQL,
+  Hero,
+  GetHeroDocument,
+  GetHeroQuery,
+} from '../../generated/graphql';
 
 @Component({
   selector: 'app-hero-detail',
@@ -37,9 +18,11 @@ type HeroResponse = {
 })
 export class HeroDetailComponent implements OnInit {
   hero$: Observable<Hero>;
+  sub: Subscription;
 
   constructor(
-    private apollo: Apollo,
+    private getHeroGphQL: GetHeroGQL,
+    private saveheroGphQL: SaveHeroGQL,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -50,13 +33,8 @@ export class HeroDetailComponent implements OnInit {
 
   getHero(): void {
     const id = +this.route.snapshot.paramMap.get('id');
-    this.hero$ = this.apollo
-      .watchQuery<HeroResponse>({
-        query: getHeroQuery,
-        variables: {
-          id,
-        },
-      })
+    this.hero$ = this.getHeroGphQL
+      .watch({ id })
       .valueChanges.pipe(map(({ data }) => data.hero));
   }
 
@@ -65,24 +43,22 @@ export class HeroDetailComponent implements OnInit {
   }
 
   save(hero: Hero): void {
-    this.apollo
-      .mutate({
-        mutation: saveHeroMutation,
-        variables: {
+    this.sub = this.saveheroGphQL
+      .mutate(
+        {
           hero: { id: hero.id, name: hero.name },
         },
-        update: store => {
-          // Read the data from our cache for this query.
-          console.log(store);
-          const data: HeroResponse = store.readQuery({
-            query: getHeroQuery,
-            variables: { id: hero.id },
-          });
-          data.hero = hero;
-          // Write our data back to the cache.
-          store.writeQuery({ query: getHeroQuery, data });
-        },
-      })
+        {
+          update: store => {
+            const data: GetHeroQuery = store.readQuery({
+              query: GetHeroDocument,
+              variables: { id: hero.id },
+            });
+            data.hero = hero;
+            store.writeQuery({ query: GetHeroDocument, data });
+          },
+        }
+      )
       .pipe(take(1))
       .subscribe(() => this.goBack());
   }

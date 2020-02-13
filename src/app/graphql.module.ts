@@ -4,7 +4,7 @@ import { SchemaLink } from 'apollo-link-schema';
 import { makeExecutableSchema } from 'graphql-tools';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HeroService } from '../app/hero.service';
-import { typeDefs } from '../data/type-defs';
+import typeDefs from '../data/type-defs';
 import { Hero } from './hero';
 
 export function createApollo(heroService: HeroService) {

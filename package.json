@@ -9,7 +9,8 @@
     "start": "ng serve",
     "test": "ng test",
     "lint": "tslint ./src/**/*.ts -t verbose",
-    "e2e": "ng e2e"
+    "e2e": "ng e2e",
+    "generate": "graphql-codegen --config codegen.yml"
   },
   "keywords": [],
   "author": "",
@@ -44,6 +45,7 @@
     "@angular/cli": "^9.0.1",
     "@angular/compiler-cli": "^9.0.0",
     "@angular/platform-server": "^9.0.0",
+    "@graphql-codegen/cli": "^1.12.2",
     "@types/jasmine": "~2.8.8",
     "@types/jasminewd2": "^2.0.4",
     "@types/node": "^12.11.1",
@@ -59,7 +61,12 @@
     "protractor": "^5.4.2",
     "ts-node": "~7.0.0",
     "tslint": "~5.15.0",
-    "typescript": "~3.7.5"
+    "typescript": "~3.7.5",
+    "@graphql-codegen/typescript": "1.12.2",
+    "@graphql-codegen/typescript-operations": "1.12.2",
+    "@graphql-codegen/typescript-apollo-angular": "1.12.2",
+    "@graphql-codegen/typescript-document-nodes": "1.12.2",
+    "@graphql-codegen/introspection": "1.12.2"
   },
   "repository": {}
 }
