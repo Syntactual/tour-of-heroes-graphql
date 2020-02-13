@@ -3,6 +3,7 @@
 The is a clone of the Tour of Heroes tutorial on Angular.io. 
 
 The purpose of this repository is to show how a front end team could implement graphql without having to stand up a server on the backend.
+
 This allows a fast implementation and the developers will see benefits of using graphql right away.
 Apollo client also comes with a local store out of the box and the app also shows how easy it is to use as an alternative to a Redux pattern state store.
 
