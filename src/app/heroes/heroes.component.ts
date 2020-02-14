@@ -1,6 +1,6 @@
 import { Component, OnInit } from '@angular/core';
 import { Observable } from 'rxjs';
-import { map, take } from 'rxjs/operators';
+import { map } from 'rxjs/operators';
 import {
   AddHeroGQL,
   DeleteHeroGQL,
@@ -53,7 +53,6 @@ export class HeroesComponent implements OnInit {
           },
         }
       )
-      .pipe(take(1))
       .subscribe();
   }
 
@@ -75,7 +74,6 @@ export class HeroesComponent implements OnInit {
           },
         }
       )
-      .pipe(take(1))
       .subscribe();
   }
 }

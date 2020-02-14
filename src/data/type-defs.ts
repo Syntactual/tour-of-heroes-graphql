@@ -15,12 +15,12 @@ export default gql`
   }
 
   input HeroInput {
-    id: Int
-    name: String
+    id: Int!
+    name: String!
   }
 
   type Hero {
-    id: Int
-    name: String
+    id: Int!
+    name: String!
   }
 `;

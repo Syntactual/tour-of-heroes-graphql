@@ -10,7 +10,7 @@
     "test": "ng test",
     "lint": "tslint ./src/**/*.ts -t verbose",
     "e2e": "ng e2e",
-    "generate": "graphql-codegen --config codegen.yml"
+    "generate": "graphql-codegen"
   },
   "keywords": [],
   "author": "",
@@ -65,7 +65,7 @@
     "@graphql-codegen/typescript": "1.12.2",
     "@graphql-codegen/typescript-operations": "1.12.2",
     "@graphql-codegen/typescript-apollo-angular": "1.12.2",
-    "@graphql-codegen/typescript-document-nodes": "1.12.2",
+    "@graphql-codegen/typescript-resolvers": "1.12.2",
     "@graphql-codegen/introspection": "1.12.2"
   },
   "repository": {}

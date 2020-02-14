@@ -1,14 +1,16 @@
 import { NgModule } from '@angular/core';
 import { ApolloModule, APOLLO_OPTIONS } from 'apollo-angular';
+import { ApolloClientOptions } from 'apollo-client';
 import { SchemaLink } from 'apollo-link-schema';
 import { makeExecutableSchema } from 'graphql-tools';
 import { InMemoryCache } from 'apollo-cache-inmemory';
 import { HeroService } from '../app/hero.service';
 import typeDefs from '../data/type-defs';
 import { Hero } from './hero';
+import { Resolvers } from '../generated/graphql';
 
-export function createApollo(heroService: HeroService) {
-  const resolvers = {
+export function createApollo(heroService: HeroService): ApolloClientOptions<any> {
+  const resolvers: Resolvers = {
     Query: {
       heroes: () => heroService.getHeroes().toPromise(),
       hero: (_, args) => heroService.getHero(args.id).toPromise(),
@@ -27,7 +29,6 @@ export function createApollo(heroService: HeroService) {
   return {
     link: new SchemaLink({ schema }),
     cache: new InMemoryCache(),
-    resolvers: {},
   };
 }
 
