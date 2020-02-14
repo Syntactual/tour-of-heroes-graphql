@@ -5,7 +5,7 @@ import { Observable, Subscription } from 'rxjs';
 import { map } from 'rxjs/operators';
 import {
   GetHeroGQL,
-  SaveHeroGQL,
+  UpdateHeroGQL,
   Hero,
   GetHeroDocument,
   GetHeroQuery,
@@ -22,7 +22,7 @@ export class HeroDetailComponent implements OnInit {
 
   constructor(
     private getHeroGphQL: GetHeroGQL,
-    private saveheroGphQL: SaveHeroGQL,
+    private updateheroGphQL: UpdateHeroGQL,
     private route: ActivatedRoute,
     private location: Location
   ) {}
@@ -43,7 +43,7 @@ export class HeroDetailComponent implements OnInit {
   }
 
   save(hero: Hero): void {
-    this.sub = this.saveheroGphQL
+    this.sub = this.updateheroGphQL
       .mutate(
         {
           hero: { id: hero.id, name: hero.name },

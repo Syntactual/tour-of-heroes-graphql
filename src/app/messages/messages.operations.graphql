@@ -1,0 +1,11 @@
+query getMessages {
+  messages {
+    body
+  }
+}
+
+mutation clearMessages {
+  clearMessages {
+    body
+  }
+}

@@ -5,9 +5,8 @@ query getHero($id: Int!) {
   }
 }
 
-mutation saveHero($hero: HeroInput!) {
-  saveHero(hero: $hero) {
-    id
-    name
+mutation updateHero($hero: HeroInput!) {
+  updateHero(hero: $hero) {
+    body
   }
 }

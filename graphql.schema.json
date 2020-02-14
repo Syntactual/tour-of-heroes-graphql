@@ -82,6 +82,22 @@
             },
             "isDeprecated": false,
             "deprecationReason": null
+          },
+          {
+            "name": "messages",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "LIST",
+              "name": null,
+              "ofType": {
+                "kind": "OBJECT",
+                "name": "Message",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
           }
         ],
         "inputFields": null,
@@ -154,11 +170,38 @@
       },
       {
         "kind": "OBJECT",
+        "name": "Message",
+        "description": "",
+        "fields": [
+          {
+            "name": "body",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "NON_NULL",
+              "name": null,
+              "ofType": {
+                "kind": "SCALAR",
+                "name": "String",
+                "ofType": null
+              }
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          }
+        ],
+        "inputFields": null,
+        "interfaces": [],
+        "enumValues": null,
+        "possibleTypes": null
+      },
+      {
+        "kind": "OBJECT",
         "name": "Mutation",
         "description": "",
         "fields": [
           {
-            "name": "saveHero",
+            "name": "updateHero",
             "description": "",
             "args": [
               {
@@ -178,7 +221,7 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Hero",
+              "name": "Message",
               "ofType": null
             },
             "isDeprecated": false,
@@ -232,7 +275,19 @@
             ],
             "type": {
               "kind": "OBJECT",
-              "name": "Hero",
+              "name": "Message",
+              "ofType": null
+            },
+            "isDeprecated": false,
+            "deprecationReason": null
+          },
+          {
+            "name": "clearMessages",
+            "description": "",
+            "args": [],
+            "type": {
+              "kind": "OBJECT",
+              "name": "Message",
               "ofType": null
             },
             "isDeprecated": false,
