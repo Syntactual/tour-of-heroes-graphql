@@ -28,13 +28,13 @@ export type HeroInput = {
 
 export type Mutation = {
    __typename?: 'Mutation',
-  saveHero?: Maybe<Hero>,
+  updateHero?: Maybe<Hero>,
   addHero?: Maybe<Hero>,
   deleteHero?: Maybe<Hero>,
 };
 
 
-export type MutationSaveHeroArgs = {
+export type MutationUpdateHeroArgs = {
   hero: HeroInput
 };
 
@@ -89,16 +89,16 @@ export type GetHeroQuery = (
   )> }
 );
 
-export type SaveHeroMutationVariables = {
+export type UpdateHeroMutationVariables = {
   hero: HeroInput
 };
 
 
-export type SaveHeroMutation = (
+export type UpdateHeroMutation = (
   { __typename?: 'Mutation' }
-  & { saveHero: Maybe<(
+  & { updateHero: Maybe<(
     { __typename?: 'Hero' }
-    & Pick<Hero, 'id' | 'name'>
+    & Pick<Hero, 'id'>
   )> }
 );
 
@@ -137,7 +137,7 @@ export type DeleteHeroMutation = (
   { __typename?: 'Mutation' }
   & { deleteHero: Maybe<(
     { __typename?: 'Hero' }
-    & Pick<Hero, 'id' | 'name'>
+    & Pick<Hero, 'id'>
   )> }
 );
 
@@ -173,11 +173,10 @@ export const GetHeroDocument = gql`
     document = GetHeroDocument;
     
   }
-export const SaveHeroDocument = gql`
-    mutation saveHero($hero: HeroInput!) {
-  saveHero(hero: $hero) {
+export const UpdateHeroDocument = gql`
+    mutation updateHero($hero: HeroInput!) {
+  updateHero(hero: $hero) {
     id
-    name
   }
 }
     `;
@@ -185,8 +184,8 @@ export const SaveHeroDocument = gql`
   @Injectable({
     providedIn: 'root'
   })
-  export class SaveHeroGQL extends Apollo.Mutation<SaveHeroMutation, SaveHeroMutationVariables> {
-    document = SaveHeroDocument;
+  export class UpdateHeroGQL extends Apollo.Mutation<UpdateHeroMutation, UpdateHeroMutationVariables> {
+    document = UpdateHeroDocument;
     
   }
 export const SearchHeroesDocument = gql`
@@ -225,7 +224,6 @@ export const DeleteHeroDocument = gql`
     mutation deleteHero($hero: HeroInput!) {
   deleteHero(hero: $hero) {
     id
-    name
   }
 }
     `;
@@ -345,7 +343,7 @@ export type HeroResolvers<ContextType = any, ParentType extends ResolversParentT
 };
 
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  saveHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationSaveHeroArgs, 'hero'>>,
+  updateHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationUpdateHeroArgs, 'hero'>>,
   addHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationAddHeroArgs, 'name'>>,
   deleteHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationDeleteHeroArgs, 'hero'>>,
 };

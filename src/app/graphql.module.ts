@@ -4,24 +4,23 @@ import { ApolloClientOptions } from 'apollo-client';
 import { SchemaLink } from 'apollo-link-schema';
 import { makeExecutableSchema } from 'graphql-tools';
 import { InMemoryCache } from 'apollo-cache-inmemory';
-import { HeroService } from '../app/hero.service';
+import { ResolversService } from '../app/resolvers.service';
 import typeDefs from '../data/type-defs';
-import { Hero } from './hero';
 import { Resolvers } from '../generated/graphql';
 
-export function createApollo(heroService: HeroService): ApolloClientOptions<any> {
+export function createApollo(
+  resolversService: ResolversService
+): ApolloClientOptions<any> {
   const resolvers: Resolvers = {
     Query: {
-      heroes: () => heroService.getHeroes().toPromise(),
-      hero: (_, args) => heroService.getHero(args.id).toPromise(),
-      searchHeroes: (_, args) =>
-        heroService.searchHeroes(args.searchTerm).toPromise(),
+      heroes: () => resolversService.heroes(),
+      hero: (_, args) => resolversService.hero(_, args),
+      searchHeroes: (_, args) => resolversService.searchHeroes(_, args),
     },
     Mutation: {
-      saveHero: (_, args) => heroService.updateHero(args.hero).toPromise(),
-      addHero: (_, args) =>
-        heroService.addHero({ name: args.name } as Hero).toPromise(),
-      deleteHero: (_, args) => heroService.deleteHero(args.hero).toPromise(),
+      updateHero: (_, args) => resolversService.updateHero(_, args),
+      addHero: (_, args) => resolversService.addHero(_, args),
+      deleteHero: (_, args) => resolversService.deleteHero(_, args),
     },
   };
 
@@ -38,7 +37,7 @@ export function createApollo(heroService: HeroService): ApolloClientOptions<any>
     {
       provide: APOLLO_OPTIONS,
       useFactory: createApollo,
-      deps: [HeroService],
+      deps: [ResolversService],
     },
   ],
 })

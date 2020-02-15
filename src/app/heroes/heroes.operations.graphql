@@ -8,6 +8,5 @@ mutation addHero($name: String!) {
 mutation deleteHero($hero: HeroInput!) {
   deleteHero(hero: $hero) {
     id
-    name
   }
 }
