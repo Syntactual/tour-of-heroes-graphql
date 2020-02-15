@@ -10,14 +10,12 @@ export default gql`
     heroes: [Hero]
     hero(id: Int!): Hero
     searchHeroes(searchTerm: String): [Hero]
-    messages: [Message]
   }
 
   type Mutation {
-    updateHero(hero: HeroInput!): Message
+    updateHero(hero: HeroInput!): Hero
     addHero(name: String!): Hero
-    deleteHero(hero: HeroInput!): Message
-    clearMessages: Message
+    deleteHero(hero: HeroInput!): Hero
   }
 
   input HeroInput {
@@ -28,9 +26,5 @@ export default gql`
   type Hero {
     id: Int!
     name: String!
-  }
-
-  type Message {
-    body: String!
   }
 `;

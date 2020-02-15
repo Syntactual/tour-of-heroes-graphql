@@ -16,13 +16,11 @@ export function createApollo(
       heroes: () => resolversService.heroes(),
       hero: (_, args) => resolversService.hero(_, args),
       searchHeroes: (_, args) => resolversService.searchHeroes(_, args),
-      messages: () => resolversService.messages(),
     },
     Mutation: {
       updateHero: (_, args) => resolversService.updateHero(_, args),
       addHero: (_, args) => resolversService.addHero(_, args),
       deleteHero: (_, args) => resolversService.deleteHero(_, args),
-      clearMessages: () => resolversService.clearMessages(),
     },
   };
 

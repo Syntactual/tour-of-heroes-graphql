@@ -3,5 +3,4 @@ query getHeroes {
     id
     name
   }
-
 }

@@ -7,7 +7,6 @@ import { Observable, of } from 'rxjs';
 import {
   QueryHeroArgs,
   QuerySearchHeroesArgs,
-  Message,
   MutationUpdateHeroArgs,
   MutationAddHeroArgs,
   MutationDeleteHeroArgs,
@@ -105,14 +104,6 @@ export class ResolversService {
         catchError(this.handleError<Hero>('deleteHero'))
       )
       .toPromise();
-  }
-
-  messages(): Message[] {
-    return this.messageService.get();
-  }
-
-  clearMessages(): any {
-    this.messageService.clear();
   }
 
   /**

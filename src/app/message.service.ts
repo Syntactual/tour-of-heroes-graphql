@@ -1,20 +1,16 @@
 import { Injectable } from '@angular/core';
-import { Message } from 'src/generated/graphql';
 
 @Injectable({
   providedIn: 'root',
 })
 export class MessageService {
-  messages: Message[] = [];
+  messages: string[] = [];
 
   add(message: string) {
-    this.messages.push({ body: `HeroService: ${message}` });
+    this.messages.push(`HeroService: ${message}`);
   }
 
   clear() {
     this.messages = [];
-  }
-  get() {
-    return this.messages;
   }
 }

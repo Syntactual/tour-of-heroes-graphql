@@ -26,17 +26,11 @@ export type HeroInput = {
   name: Scalars['String'],
 };
 
-export type Message = {
-   __typename?: 'Message',
-  body: Scalars['String'],
-};
-
 export type Mutation = {
    __typename?: 'Mutation',
-  updateHero?: Maybe<Message>,
+  updateHero?: Maybe<Hero>,
   addHero?: Maybe<Hero>,
-  deleteHero?: Maybe<Message>,
-  clearMessages?: Maybe<Message>,
+  deleteHero?: Maybe<Hero>,
 };
 
 
@@ -59,7 +53,6 @@ export type Query = {
   heroes?: Maybe<Array<Maybe<Hero>>>,
   hero?: Maybe<Hero>,
   searchHeroes?: Maybe<Array<Maybe<Hero>>>,
-  messages?: Maybe<Array<Maybe<Message>>>,
 };
 
 
@@ -104,8 +97,8 @@ export type UpdateHeroMutationVariables = {
 export type UpdateHeroMutation = (
   { __typename?: 'Mutation' }
   & { updateHero: Maybe<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'body'>
+    { __typename?: 'Hero' }
+    & Pick<Hero, 'id'>
   )> }
 );
 
@@ -143,30 +136,8 @@ export type DeleteHeroMutationVariables = {
 export type DeleteHeroMutation = (
   { __typename?: 'Mutation' }
   & { deleteHero: Maybe<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'body'>
-  )> }
-);
-
-export type GetMessagesQueryVariables = {};
-
-
-export type GetMessagesQuery = (
-  { __typename?: 'Query' }
-  & { messages: Maybe<Array<Maybe<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'body'>
-  )>>> }
-);
-
-export type ClearMessagesMutationVariables = {};
-
-
-export type ClearMessagesMutation = (
-  { __typename?: 'Mutation' }
-  & { clearMessages: Maybe<(
-    { __typename?: 'Message' }
-    & Pick<Message, 'body'>
+    { __typename?: 'Hero' }
+    & Pick<Hero, 'id'>
   )> }
 );
 
@@ -205,7 +176,7 @@ export const GetHeroDocument = gql`
 export const UpdateHeroDocument = gql`
     mutation updateHero($hero: HeroInput!) {
   updateHero(hero: $hero) {
-    body
+    id
   }
 }
     `;
@@ -252,7 +223,7 @@ export const AddHeroDocument = gql`
 export const DeleteHeroDocument = gql`
     mutation deleteHero($hero: HeroInput!) {
   deleteHero(hero: $hero) {
-    body
+    id
   }
 }
     `;
@@ -262,36 +233,6 @@ export const DeleteHeroDocument = gql`
   })
   export class DeleteHeroGQL extends Apollo.Mutation<DeleteHeroMutation, DeleteHeroMutationVariables> {
     document = DeleteHeroDocument;
-    
-  }
-export const GetMessagesDocument = gql`
-    query getMessages {
-  messages {
-    body
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class GetMessagesGQL extends Apollo.Query<GetMessagesQuery, GetMessagesQueryVariables> {
-    document = GetMessagesDocument;
-    
-  }
-export const ClearMessagesDocument = gql`
-    mutation clearMessages {
-  clearMessages {
-    body
-  }
-}
-    `;
-
-  @Injectable({
-    providedIn: 'root'
-  })
-  export class ClearMessagesGQL extends Apollo.Mutation<ClearMessagesMutation, ClearMessagesMutationVariables> {
-    document = ClearMessagesDocument;
     
   }
 
@@ -371,7 +312,6 @@ export type ResolversTypes = {
   Hero: ResolverTypeWrapper<Hero>,
   Int: ResolverTypeWrapper<Scalars['Int']>,
   String: ResolverTypeWrapper<Scalars['String']>,
-  Message: ResolverTypeWrapper<Message>,
   Mutation: ResolverTypeWrapper<{}>,
   HeroInput: HeroInput,
   Boolean: ResolverTypeWrapper<Scalars['Boolean']>,
@@ -383,7 +323,6 @@ export type ResolversParentTypes = {
   Hero: Hero,
   Int: Scalars['Int'],
   String: Scalars['String'],
-  Message: Message,
   Mutation: {},
   HeroInput: HeroInput,
   Boolean: Scalars['Boolean'],
@@ -403,28 +342,20 @@ export type HeroResolvers<ContextType = any, ParentType extends ResolversParentT
   __isTypeOf?: isTypeOfResolverFn<ParentType>,
 };
 
-export type MessageResolvers<ContextType = any, ParentType extends ResolversParentTypes['Message'] = ResolversParentTypes['Message']> = {
-  body?: Resolver<ResolversTypes['String'], ParentType, ContextType>,
-  __isTypeOf?: isTypeOfResolverFn<ParentType>,
-};
-
 export type MutationResolvers<ContextType = any, ParentType extends ResolversParentTypes['Mutation'] = ResolversParentTypes['Mutation']> = {
-  updateHero?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<MutationUpdateHeroArgs, 'hero'>>,
+  updateHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationUpdateHeroArgs, 'hero'>>,
   addHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationAddHeroArgs, 'name'>>,
-  deleteHero?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType, RequireFields<MutationDeleteHeroArgs, 'hero'>>,
-  clearMessages?: Resolver<Maybe<ResolversTypes['Message']>, ParentType, ContextType>,
+  deleteHero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<MutationDeleteHeroArgs, 'hero'>>,
 };
 
 export type QueryResolvers<ContextType = any, ParentType extends ResolversParentTypes['Query'] = ResolversParentTypes['Query']> = {
   heroes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Hero']>>>, ParentType, ContextType>,
   hero?: Resolver<Maybe<ResolversTypes['Hero']>, ParentType, ContextType, RequireFields<QueryHeroArgs, 'id'>>,
   searchHeroes?: Resolver<Maybe<Array<Maybe<ResolversTypes['Hero']>>>, ParentType, ContextType, QuerySearchHeroesArgs>,
-  messages?: Resolver<Maybe<Array<Maybe<ResolversTypes['Message']>>>, ParentType, ContextType>,
 };
 
 export type Resolvers<ContextType = any> = {
   Hero?: HeroResolvers<ContextType>,
-  Message?: MessageResolvers<ContextType>,
   Mutation?: MutationResolvers<ContextType>,
   Query?: QueryResolvers<ContextType>,
 };
