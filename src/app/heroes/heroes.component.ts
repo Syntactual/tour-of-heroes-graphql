@@ -44,7 +44,7 @@ export class HeroesComponent implements OnInit {
           name,
         },
         {
-          update: (store, { data: { addHero } }: any) => {
+          update: (store, { data: { addHero } }) => {
             const data: GetHeroesQuery = store.readQuery({
               query: GetHeroesDocument,
             });

@@ -158,7 +158,7 @@
         "description": "",
         "fields": [
           {
-            "name": "saveHero",
+            "name": "updateHero",
             "description": "",
             "args": [
               {

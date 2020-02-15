@@ -1,7 +1,11 @@
 import gql from 'graphql-tag';
 
-
 export default gql`
+  schema {
+    query: Query
+    mutation: Mutation
+  }
+
   type Query {
     heroes: [Hero]
     hero(id: Int!): Hero
@@ -9,7 +13,7 @@ export default gql`
   }
 
   type Mutation {
-    saveHero(hero: HeroInput!): Hero
+    updateHero(hero: HeroInput!): Hero
     addHero(name: String!): Hero
     deleteHero(hero: HeroInput!): Hero
   }
