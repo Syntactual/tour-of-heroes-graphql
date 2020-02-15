@@ -18,7 +18,6 @@ import {
 })
 export class HeroDetailComponent implements OnInit {
   hero$: Observable<Hero>;
-  sub: Subscription;
 
   constructor(
     private getHeroGphQL: GetHeroGQL,
@@ -43,7 +42,7 @@ export class HeroDetailComponent implements OnInit {
   }
 
   save(hero: Hero): void {
-    this.sub = this.saveheroGphQL
+    this.saveheroGphQL
       .mutate(
         {
           hero: { id: hero.id, name: hero.name },
